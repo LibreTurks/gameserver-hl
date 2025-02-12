@@ -1,0 +1,4 @@
+force_install_dir ./svends
+login anonymous
+app_update 276060 validate
+quit
