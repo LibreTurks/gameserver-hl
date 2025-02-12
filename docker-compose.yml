@@ -6,4 +6,4 @@ services:
     image: mt190502/gameserver-hl:latest-svencoop
     # volumes:
       # - ./svencoop:/opt/steam/new-svencoop                 # For override
-    command: -num_edicts 3072 +sv_lan 1 -console -port 27015 +log on +map 
+    command: -num_edicts 3072 +sv_lan 1 -console -port 27015 +log on +maxplayers 16 +rcon_password RCON_PASSWORD +sv_password SV_PASSWORD 
