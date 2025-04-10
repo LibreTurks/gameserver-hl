@@ -8,6 +8,7 @@ ARG reapi_version=5.24.0.300
 ARG regamedll_version=5.26.0.668
 ARG rehlds_version=3.13.0.788
 ARG reunion_version=0.2.0.13
+ARG redeathmatch_version=1.0.0-b11
 
 #~ URLs
 ARG steamcmd_url="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
@@ -18,6 +19,7 @@ ARG reapi_url="https://github.com/rehlds/ReAPI/releases/download/${reapi_version
 ARG regamedll_url="https://github.com/rehlds/ReGameDLL_CS/releases/download/${regamedll_version}/regamedll-bin-${regamedll_version}.zip"
 ARG rehlds_url="https://github.com/rehlds/ReHLDS/releases/download/${rehlds_version}/rehlds-bin-${rehlds_version}.zip"
 ARG reunion_url="https://github.com/rehlds/ReUnion/releases/download/${reunion_version}/reunion-${reunion_version}.zip"
+ARG redeathmatch_url="https://github.com/ReDeathmatch/ReDeathmatch_AMXX/releases/download/${redeathmatch_version}/ReDeathmatch-${redeathmatch_version}.zip"
 ##########################################################
 
 
@@ -95,6 +97,11 @@ RUN curl -sL "$reunion_url" -o "reunion.zip" \
     && echo 'linux addons/reunion/reunion_mm_i386.so' >> hlds/cstrike/addons/metamod/plugins.ini \
     && sed -i 's/AuthVersion = 3/AuthVersion = 2/g; s/SteamIdHashSalt =/SteamIdHashSalt = 32/g' hlds/cstrike/reunion.cfg
 
+#~ Install ReDeathmatch
+RUN curl -sL "$redeathmatch_url" -o "redeathmatch.zip" \
+    && unzip "redeathmatch.zip" -d "redeathmatch" \
+    && cp -R redeathmatch/cstrike/addons/* hlds/cstrike/addons/
+
 #~ Install Custom AMX Plugins
 COPY ./lib/amxmodx hlds/cstrike/addons/amxmodx/
 RUN echo 'damager_reapi.amxx                 ; show damage' >> hlds/cstrike/addons/amxmodx/configs/plugins.ini \
@@ -102,7 +109,7 @@ RUN echo 'damager_reapi.amxx                 ; show damage' >> hlds/cstrike/addo
     && echo 'resetscore.amxx          ; reset user score' >> hlds/cstrike/addons/amxmodx/configs/plugins.ini
 
 #~ Clean up
-RUN rm -rf "rehlds.zip" "rehlds" "metamod.zip" "metamod" "regamedll.zip" "regamedll" "reunion.zip" "reunion" "hlds.install" "reapi.zip" "reapi" 
+RUN rm -rf "rehlds.zip" "rehlds" "metamod.zip" "metamod" "regamedll.zip" "regamedll" "reunion.zip" "reunion" "redeathmatch.zip" "redeathmatch" "hlds.install" "reapi.zip" "reapi"
 ##########################################################
 
 
