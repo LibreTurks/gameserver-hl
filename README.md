@@ -1,54 +1,76 @@
-# Counter-Strike 1.6 ReHLDS Server
+# Half-Life Unified Game Server
 
-A containerized CS 1.6 server built on the ReHLDS stack. This fork focuses on improved Docker deployment, stateless images, and simplified runtime customization.
+A production-ready, containerized game server solution supporting **Counter-Strike 1.6**, **Half-Life**, and **Sven Co-op**.
 
-## Quick Start
+This project provides pre-built, optimized images powered by the **ReHLDS** stack (for CS/HL) and official **SvenDS**.
 
-The fastest way to get a server running is with Docker Compose:
+## 🚀 Quick Start (For Users)
+
+You do not need to build anything. The easiest way to run a server is using the provided Compose files, which pull the latest stable images from the GitHub Container Registry.
+
+### 1. Counter-Strike 1.6
+```bash
+docker compose -f docker-compose.cstrike.yml up -d
+```
+
+### 2. Half-Life
+```bash
+docker compose -f docker-compose.halflife.yml up -d
+```
+
+### 3. Sven Co-op
+```bash
+docker compose -f docker-compose.svencoop.yml up -d
+```
+
+The server will start and listen on port **27015** (UDP/TCP).
+
+---
+
+## ⚙️ Configuration
+
+### Customizing Server Files
+You don't need to rebuild the image to add maps, plugins, or change configurations. Simply place your files in the local directory mapped to the container.
+
+Each Compose file maps a local folder to `/opt/steam/custom` inside the container. On startup, these files are copied over the default game files.
+
+| Game | Local Folder | Target in Container |
+|------|--------------|---------------------|
+| **CS 1.6** | `./cstrike/` | `cstrike/` |
+| **Half-Life** | `./valve/` | `valve/` |
+| **Sven Co-op** | `./svencoop/` | `svencoop/` |
+
+**Example:** To add a new map to CS 1.6, put the `.bsp` file in `cstrike/maps/` on your host machine and restart the container.
+
+### Server Configs
+- **server.cfg**: Edit the `server.cfg` in your local game folder (e.g., `cstrike/server.cfg`).
+- **Mapcycle**: Edit `mapcycle.txt` in your local game folder.
+
+---
+
+## 🛠️ Development (Building from Source)
+
+If you are a developer and want to modify the server binaries, install scripts, or Dockerfile logic, you can build the images locally.
 
 ```bash
-docker-compose up -d
+# Build and run CS 1.6
+docker compose -f docker-compose.cstrike.yml up -d --build
+
+# Build and run Half-Life
+docker compose -f docker-compose.halflife.yml up -d --build
+
+# Build and run Sven Co-op
+docker compose -f docker-compose.svencoop.yml up -d --build
 ```
 
-Or using the Docker CLI:
+## Stack Details
 
-```bash
-docker run -d \
-  -p 27015:27015/udp \
-  -p 27015:27015 \
-  ghcr.io/libreturks/gameserver-hl:cstrike \
-  -game cstrike +map de_dust2 +maxplayers 16 +rcon_password "yourpassword"
-```
+### CS 1.6 & Half-Life
+- **Engine**: ReHLDS (Reverse-engineered HLDS)
+- **Metamod**: Metamod-R
+- **AMX Mod X**: 1.10
+- **Modules**: ReGameDLL, ReAPI, ReUnion, ReDeathmatch (CS only)
 
-## Runtime Customization
-
-This image uses a sync-on-boot wrapper. Instead of rebuilding the image to add content, you can mount a volume to `/opt/steam/new-cstrike`. Files in this directory are merged into the live `cstrike` folder on startup.
-
-### Example Volume Mounting
-
-In your `docker-compose.yml`:
-
-```yaml
-volumes:
-  - ./my-custom-content:/opt/steam/new-cstrike
-```
-
-**Structure of `./my-custom-content`:**
-- `config/server.cfg` — Overrides the default server configuration.
-- `maps/` — Add `.bsp` and `.res` files here.
-- `addons/amxmodx/plugins/` — Add custom `.amxx` plugins.
-- `addons/amxmodx/configs/plugins.ini` — Enable your custom plugins.
-
-## Included Stack
-
-- **Engine**: ReHLDS `3.13.0.788` (Optimized HLDS replacement)
-- **Logic**: ReGameDLL `5.26.0.668`
-- **API**: ReAPI `5.24.0.300`
-- **Metamod**: Metamod-R `1.3.0.149`
-- **AMX Mod X**: `1.10`
-- **Protocol**: ReUnion `0.2.0.13` (Steam/Non-Steam support)
-- **Mod**: ReDeathmatch `1.0.0-b11` (Pre-configured Deathmatch)
-
-## Bundled Maps
-Includes a selection of small-scale and classic maps:
-`awp_india`, `fy_snow`, `de_dust2x2`, `fy_snow3`, `surf_nice_fly_3`, `awp_katkat`.
+### Sven Co-op
+- **Engine**: SvenDS (Official)
+- **Content**: Includes Opposing Force support

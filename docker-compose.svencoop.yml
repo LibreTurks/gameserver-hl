@@ -1,0 +1,14 @@
+services:
+  svencoop:
+    build:
+      context: .
+      args:
+        GAME_VARIANT: svencoop
+    image: ghcr.io/libreturks/gameserver-hl:svencoop
+    ports:
+      - "27015:27015/udp"
+      - "27015:27015/tcp"
+    volumes:
+      - ./svencoop:/opt/steam/custom
+    command: +map stadium4 +maxplayers 8
+    restart: unless-stopped

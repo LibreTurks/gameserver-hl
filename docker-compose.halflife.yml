@@ -1,0 +1,14 @@
+services:
+  halflife:
+    build:
+      context: .
+      args:
+        GAME_VARIANT: halflife
+    image: ghcr.io/libreturks/gameserver-hl:halflife
+    ports:
+      - "27015:27015/udp"
+      - "27015:27015/tcp"
+    volumes:
+      - ./valve:/opt/steam/custom
+    command: +map crossfire +maxplayers 16
+    restart: unless-stopped
