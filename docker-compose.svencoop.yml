@@ -10,5 +10,5 @@ services:
       - "27015:27015/tcp"
     volumes:
       - ./svencoop:/opt/steam/custom
-    command: +map stadium4 +maxplayers 8
+    command: -game svencoop +map stadium4 +maxplayers 8
     restart: unless-stopped

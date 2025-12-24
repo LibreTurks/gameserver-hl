@@ -1,7 +1,7 @@
-cs_italy
-cs_office
-cs_assault
-cs_militia
-de_dust2
-de_nuke
-de_inferno
+de_dust2x2
+awp_india
+awp_katkat
+fy_snow
+fy_snow2
+fy_snow3
+surf_nice_fly_3

@@ -10,5 +10,5 @@ services:
       - "27015:27015/tcp"
     volumes:
       - ./cstrike:/opt/steam/custom
-    command: +map de_dust2 +maxplayers 16
+    command: -game cstrike +map de_dust2 +maxplayers 16
     restart: unless-stopped
